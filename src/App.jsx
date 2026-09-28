@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { CATEGORIES, GAMES_DATA } from './data/games';
+import { fetchCatalogGames, submitNewGameToFirestore } from './services/gameService';
 import GameCard from './components/GameCard';
 import GameModal from './components/GameModal';
 import PlayableMiniGame from './components/PlayableMiniGame';
@@ -7,7 +8,7 @@ import Navigation from './components/Navigation';
 import TrendingView from './components/TrendingView';
 import ProfileView from './components/ProfileView';
 import SubmitGameModal from './components/SubmitGameModal';
-import { Flame, Sparkles, Zap, Trophy, Gamepad2, Search, Smartphone, Heart } from 'lucide-react';
+import { Flame, Sparkles, Zap, Trophy, Gamepad2, Search, Smartphone, Heart, Database } from 'lucide-react';
 
 export default function App() {
   const [games, setGames] = useState(GAMES_DATA);
@@ -18,6 +19,17 @@ export default function App() {
   const [activeMiniGame, setActiveMiniGame] = useState(null);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isMobileFrame, setIsMobileFrame] = useState(false);
+
+  // Load games from Firebase Firestore on mount
+  useEffect(() => {
+    async function loadGames() {
+      const remoteGames = await fetchCatalogGames();
+      if (remoteGames && remoteGames.length > 0) {
+        setGames(remoteGames);
+      }
+    }
+    loadGames();
+  }, []);
 
   // Favorites state
   const [favorites, setFavorites] = useState(() => {
@@ -61,8 +73,9 @@ export default function App() {
     });
   }, [games, selectedCategory, searchQuery, currentTab, favorites]);
 
-  const handleAddCustomGame = (newGame) => {
+  const handleAddCustomGame = async (newGame) => {
     setGames(prev => [newGame, ...prev]);
+    await submitNewGameToFirestore(newGame);
   };
 
   const contentMarkup = (
@@ -96,9 +109,15 @@ export default function App() {
               />
               
               <div className="relative z-20 max-w-lg space-y-3">
-                <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-950 inline-flex items-center gap-1 shadow-md">
-                  <Sparkles className="w-3.5 h-3.5 fill-slate-950" /> FEATURED INSTANT GAME
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-950 inline-flex items-center gap-1 shadow-md">
+                    <Sparkles className="w-3.5 h-3.5 fill-slate-950" /> FEATURED INSTANT GAME
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                    <Database className="w-3 h-3" /> FIREBASE CONNECTED
+                  </span>
+                </div>
+
                 <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-none">
                   Cyber Runner <span className="text-gradient">2099</span>
                 </h2>
@@ -108,13 +127,13 @@ export default function App() {
 
                 <div className="pt-2 flex flex-wrap gap-3">
                   <button
-                    onClick={() => setActiveMiniGame(games.find(g => g.id === 'cyber-runner-2099'))}
+                    onClick={() => setActiveMiniGame(games.find(g => g.id === 'cyber-runner-2099') || games[0])}
                     className="px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-extrabold text-xs sm:text-sm hover:brightness-110 shadow-lg shadow-cyan-500/30 transition-all active:scale-95 flex items-center gap-2"
                   >
                     <Zap className="w-4 h-4 fill-slate-950" /> PLAY INSTANT DEMO
                   </button>
                   <button
-                    onClick={() => setActiveGameModal(games.find(g => g.id === 'cyber-runner-2099'))}
+                    onClick={() => setActiveGameModal(games.find(g => g.id === 'cyber-runner-2099') || games[0])}
                     className="px-5 py-3 rounded-2xl bg-slate-900/90 text-slate-200 border border-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-800 transition-colors"
                   >
                     View Game Specs
