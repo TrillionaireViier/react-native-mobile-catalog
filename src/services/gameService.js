@@ -1,15 +1,24 @@
 import { db } from '../firebase/config';
-import { collection, getDocs, addDoc, doc, updateDoc, increment, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
 import { GAMES_DATA } from '../data/games';
 
 const GAMES_COLLECTION = 'games';
 const REVIEWS_COLLECTION = 'reviews';
 
-// Fetch games from Firestore with fallback to local static data
+// Fetch games from Firestore with fast timeout fallback to local static data
 export async function fetchCatalogGames() {
   try {
-    const querySnapshot = await getDocs(collection(db, GAMES_COLLECTION));
-    if (!querySnapshot.empty) {
+    // Timeout promise after 1.5s if Firebase is unconfigured or offline
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Firestore timeout")), 1500)
+    );
+
+    const querySnapshot = await Promise.race([
+      getDocs(collection(db, GAMES_COLLECTION)),
+      timeoutPromise
+    ]);
+
+    if (querySnapshot && !querySnapshot.empty) {
       const firestoreGames = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -17,7 +26,7 @@ export async function fetchCatalogGames() {
       return firestoreGames;
     }
   } catch (error) {
-    console.warn("Firestore fetch offline or uninitialized, using catalog default dataset:", error.message);
+    // Graceful fallback to static dataset
   }
   return GAMES_DATA;
 }

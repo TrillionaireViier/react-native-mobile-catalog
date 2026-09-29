@@ -20,12 +20,18 @@ export default function App() {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [isMobileFrame, setIsMobileFrame] = useState(false);
 
-  // Load games from Firebase Firestore on mount
+  // Load games from Firebase Firestore on mount (with merge protection)
   useEffect(() => {
     async function loadGames() {
       const remoteGames = await fetchCatalogGames();
       if (remoteGames && remoteGames.length > 0) {
-        setGames(remoteGames);
+        const gamesMap = new Map();
+        GAMES_DATA.forEach(g => gamesMap.set(g.id, g));
+        remoteGames.forEach(g => {
+          const existing = gamesMap.get(g.id) || {};
+          gamesMap.set(g.id, { ...existing, ...g });
+        });
+        setGames(Array.from(gamesMap.values()));
       }
     }
     loadGames();
