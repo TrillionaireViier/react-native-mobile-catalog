@@ -187,17 +187,20 @@ export default function GameDetailPage({
             {game.isMiniGame && (
               <button
                 onClick={() => onPlayMiniGame(game)}
-                className="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 text-white font-extrabold text-sm sm:text-base shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all touch-manipulation"
+                className="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 text-white font-extrabold text-sm sm:text-base shadow-lg shadow-purple-600/30 flex flex-col items-center justify-center hover:brightness-110 active:scale-95 transition-all touch-manipulation"
               >
-                <Play className="w-5 h-5 fill-white" />
-                PLAY INSTANT MINI-GAME DEMO
+                <div className="flex items-center gap-2">
+                  <Play className="w-5 h-5 fill-white" />
+                  <span>PLAY INSTANT DEMO</span>
+                </div>
+                <span className="text-[10px] text-pink-200 font-normal">0 MB • Runs directly in browser</span>
               </button>
             )}
 
             <button
               onClick={handleDownload}
               disabled={downloading}
-              className={`flex-1 py-3.5 px-6 rounded-2xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 touch-manipulation ${
+              className={`flex-1 py-3.5 px-6 rounded-2xl font-extrabold text-sm sm:text-base flex flex-col items-center justify-center shadow-lg transition-all active:scale-95 touch-manipulation ${
                 downloadProgress === 100
                   ? 'bg-emerald-500 text-slate-950 shadow-emerald-500/20'
                   : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 hover:brightness-110 shadow-cyan-500/30'
@@ -206,17 +209,24 @@ export default function GameDetailPage({
               {downloading ? (
                 downloadProgress === 100 ? (
                   <>
-                    <CheckCircle2 className="w-5 h-5" /> INSTALLED / DOWNLOADED!
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5" /> <span>INSTALLED!</span>
+                    </div>
                   </>
                 ) : (
                   <>
-                    <div className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
-                    DOWNLOADING ({downloadProgress}%)
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                      <span>DOWNLOADING ({downloadProgress}%)</span>
+                    </div>
                   </>
                 )
               ) : (
                 <>
-                  <Download className="w-5 h-5" /> DOWNLOAD APK / EXPO ({game.size})
+                  <div className="flex items-center gap-2">
+                    <Download className="w-5 h-5" /> <span>DOWNLOAD FULL GAME</span>
+                  </div>
+                  <span className="text-[10px] opacity-80 font-normal">Full Mobile APK / Expo ({game.size})</span>
                 </>
               )}
             </button>
