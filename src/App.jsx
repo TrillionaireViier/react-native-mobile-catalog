@@ -303,27 +303,28 @@ export default function App() {
     </div>
   );
 
-  // If Mobile Frame mode is enabled, render inside iPhone mockup chassis
-  if (isMobileFrame) {
+  // If Mobile Frame mode is enabled (Desktop preview mode only)
+  if (isMobileFrame && typeof window !== 'undefined' && window.innerWidth >= 768) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 sm:p-8">
         {/* Mobile Frame Container */}
-        <div className="relative w-full max-w-[420px] h-[850px] bg-slate-900 border-[8px] border-slate-800 rounded-[50px] shadow-2xl overflow-hidden flex flex-col ring-1 ring-cyan-500/30">
+        <div className="relative w-full max-w-[420px] h-[850px] max-h-[90vh] bg-slate-900 border-[8px] border-slate-800 rounded-[50px] shadow-2xl overflow-hidden flex flex-col ring-1 ring-cyan-500/30">
           
           {/* Dynamic Island / Notch */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-6 bg-slate-950 rounded-b-2xl z-50 flex items-center justify-center">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-6 bg-slate-950 rounded-b-2xl z-50 flex items-center justify-center pointer-events-none">
             <div className="w-3 h-3 rounded-full bg-slate-900 border border-slate-800" />
           </div>
 
-          <div className="flex-1 overflow-y-auto pt-4">
+          <div className="flex-1 overflow-y-auto no-scrollbar pt-2">
             {contentMarkup}
           </div>
         </div>
 
-        <p className="text-xs text-slate-500 mt-4">Mobile Device Preview Active • Click "Mobile Frame" in header to exit</p>
+        <p className="text-xs text-slate-500 mt-4">Mobile Device Preview Active • Click "Desktop View" in header to exit</p>
       </div>
     );
   }
 
   return contentMarkup;
 }
+
