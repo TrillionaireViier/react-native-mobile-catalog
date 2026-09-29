@@ -93,48 +93,48 @@ export default function App() {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-4 py-4 sm:py-6">
 
         {/* --- CATALOG TAB --- */}
         {currentTab === 'catalog' && (
-          <div className="space-y-6 pb-24">
+          <div className="space-y-5 sm:space-y-6 pb-28 sm:pb-24">
             
             {/* Featured Hero Banner */}
-            <div className="relative rounded-3xl overflow-hidden glass-card border border-cyan-500/20 p-6 sm:p-10 shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0b0e17] via-[#0b0e17]/80 to-transparent z-10" />
+            <div className="relative rounded-3xl overflow-hidden glass-card border border-cyan-500/20 p-5 sm:p-10 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0b0e17] via-[#0b0e17]/85 to-transparent z-10" />
               <img 
                 src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1600&q=80" 
                 alt="Featured Game" 
-                className="absolute inset-0 w-full h-full object-cover opacity-60"
+                className="absolute inset-0 w-full h-full object-cover opacity-50 sm:opacity-60"
               />
               
-              <div className="relative z-20 max-w-lg space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-950 inline-flex items-center gap-1 shadow-md">
-                    <Sparkles className="w-3.5 h-3.5 fill-slate-950" /> FEATURED INSTANT GAME
+              <div className="relative z-20 max-w-lg space-y-2.5 sm:space-y-3">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-950 inline-flex items-center gap-1 shadow-md">
+                    <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-slate-950" /> FEATURED INSTANT GAME
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                    <Database className="w-3 h-3" /> FIREBASE CONNECTED
+                  <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                    <Database className="w-3 h-3" /> FIREBASE
                   </span>
                 </div>
 
-                <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-none">
+                <h2 className="font-display font-extrabold text-2xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-none">
                   Cyber Runner <span className="text-gradient">2099</span>
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-300 line-clamp-2 leading-relaxed">
                   High-speed synthwave parkour in neon megacities. Test your reflexes in this browser & mobile instant mini-game!
                 </p>
 
-                <div className="pt-2 flex flex-wrap gap-3">
+                <div className="pt-2 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
                   <button
                     onClick={() => setActiveMiniGame(games.find(g => g.id === 'cyber-runner-2099') || games[0])}
-                    className="px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-extrabold text-xs sm:text-sm hover:brightness-110 shadow-lg shadow-cyan-500/30 transition-all active:scale-95 flex items-center gap-2"
+                    className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-extrabold text-xs sm:text-sm hover:brightness-110 shadow-lg shadow-cyan-500/30 transition-all active:scale-95 flex items-center justify-center gap-2 touch-manipulation"
                   >
                     <Zap className="w-4 h-4 fill-slate-950" /> PLAY INSTANT DEMO
                   </button>
                   <button
                     onClick={() => setActiveGameModal(games.find(g => g.id === 'cyber-runner-2099') || games[0])}
-                    className="px-5 py-3 rounded-2xl bg-slate-900/90 text-slate-200 border border-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-800 transition-colors"
+                    className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-900/90 text-slate-200 border border-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-800 transition-colors flex items-center justify-center touch-manipulation"
                   >
                     View Game Specs
                   </button>
@@ -143,12 +143,12 @@ export default function App() {
             </div>
 
             {/* Category Filter Chips Carousel */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 pt-1 -mx-1 px-1 touch-pan-x snap-x">
               {CATEGORIES.map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 border ${
+                  className={`snap-start px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 border touch-manipulation shrink-0 active:scale-95 ${
                     selectedCategory === cat.id
                       ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 border-cyan-400 shadow-md shadow-cyan-500/20'
                       : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
@@ -160,10 +160,10 @@ export default function App() {
             </div>
 
             {/* Games Grid Header */}
-            <div className="flex items-center justify-between">
-              <h3 className="font-display font-bold text-xl text-white flex items-center gap-2">
-                <Gamepad2 className="w-5 h-5 text-cyan-400" />
-                {selectedCategory === 'all' ? 'All Mobile Games' : CATEGORIES.find(c => c.id === selectedCategory)?.name}
+            <div className="flex items-center justify-between pt-1">
+              <h3 className="font-display font-bold text-lg sm:text-xl text-white flex items-center gap-2">
+                <Gamepad2 className="w-5 h-5 text-cyan-400 shrink-0" />
+                <span>{selectedCategory === 'all' ? 'All Mobile Games' : CATEGORIES.find(c => c.id === selectedCategory)?.name}</span>
                 <span className="text-xs font-mono text-slate-500 bg-slate-900 px-2 py-0.5 rounded-full">
                   {filteredGames.length}
                 </span>
@@ -172,13 +172,13 @@ export default function App() {
 
             {/* Games Grid */}
             {filteredGames.length === 0 ? (
-              <div className="py-16 text-center space-y-3 glass-card rounded-3xl border border-slate-800">
-                <Search className="w-12 h-12 text-slate-600 mx-auto" />
-                <h4 className="font-display text-lg font-bold text-white">No games found</h4>
+              <div className="py-12 sm:py-16 text-center space-y-3 glass-card rounded-3xl border border-slate-800 px-4">
+                <Search className="w-10 h-10 sm:w-12 sm:h-12 text-slate-600 mx-auto" />
+                <h4 className="font-display text-base sm:text-lg font-bold text-white">No games found</h4>
                 <p className="text-xs text-slate-400">Try adjusting your search filter or category selection.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {filteredGames.map(game => (
                   <GameCard 
                     key={game.id}
@@ -197,16 +197,16 @@ export default function App() {
 
         {/* --- INSTANT MINI GAMES TAB --- */}
         {currentTab === 'minigames' && (
-          <div className="space-y-6 pb-24">
-            <div className="p-6 rounded-3xl bg-gradient-to-r from-cyan-950/60 to-purple-950/60 border border-cyan-500/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="space-y-5 sm:space-y-6 pb-28 sm:pb-24">
+            <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-cyan-950/60 to-purple-950/60 border border-cyan-500/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-3">
               <div>
-                <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-white">Instant Mini-Games</h2>
+                <h2 className="font-display font-extrabold text-xl sm:text-3xl text-white">Instant Mini-Games</h2>
                 <p className="text-xs text-slate-300 mt-1">Play HTML5 playable demos right inside your browser without installing!</p>
               </div>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500 text-slate-950">NO INSTALL REQUIRED</span>
+              <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-cyan-500 text-slate-950 shrink-0">NO INSTALL REQUIRED</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
               {games.filter(g => g.isMiniGame).map(game => (
                 <GameCard 
                   key={game.id}
@@ -232,19 +232,19 @@ export default function App() {
 
         {/* --- FAVORITES TAB --- */}
         {currentTab === 'favorites' && (
-          <div className="space-y-6 pb-24">
-            <h2 className="font-display font-extrabold text-2xl text-white flex items-center gap-2">
-              <Heart className="w-6 h-6 text-rose-500 fill-rose-500" /> Saved Favorites ({filteredGames.length})
+          <div className="space-y-5 sm:space-y-6 pb-28 sm:pb-24">
+            <h2 className="font-display font-extrabold text-xl sm:text-2xl text-white flex items-center gap-2">
+              <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-rose-500 fill-rose-500 shrink-0" /> Saved Favorites ({filteredGames.length})
             </h2>
 
             {filteredGames.length === 0 ? (
-              <div className="py-16 text-center space-y-3 glass-card rounded-3xl border border-slate-800">
-                <Heart className="w-12 h-12 text-slate-600 mx-auto" />
-                <h4 className="font-display text-lg font-bold text-white">No saved games yet</h4>
+              <div className="py-12 sm:py-16 text-center space-y-3 glass-card rounded-3xl border border-slate-800 px-4">
+                <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-slate-600 mx-auto" />
+                <h4 className="font-display text-base sm:text-lg font-bold text-white">No saved games yet</h4>
                 <p className="text-xs text-slate-400">Click the heart icon on any game card to add it to your collection.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {filteredGames.map(game => (
                   <GameCard 
                     key={game.id}
