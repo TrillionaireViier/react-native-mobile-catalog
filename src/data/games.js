@@ -5,7 +5,7 @@ export const CATEGORIES = [
   { id: 'puzzle', name: 'Puzzle & Brain', icon: 'Brain' },
   { id: 'racing', name: 'Nitro Racing', icon: 'Trophy' },
   { id: 'rpg', name: 'Sci-Fi RPG', icon: 'Shield' },
-  { id: 'strategy', name: 'Tactical', icon: 'Target' },
+  { id: 'strategy', name: 'Tactical Strategy', icon: 'Target' },
   { id: 'minigame', name: 'Instant Mini-Games', icon: 'Sparkles' }
 ];
 
@@ -93,6 +93,60 @@ export const GAMES_DATA = [
     ]
   },
   {
+    id: 'cyber-snake-2099',
+    title: 'Cyber Snake 2099',
+    developer: 'Grid Master Studios',
+    category: 'arcade',
+    isMiniGame: true,
+    miniGameType: 'snake',
+    rating: 4.6,
+    reviewsCount: '6.4K',
+    downloads: '420K+',
+    size: '45 MB',
+    version: 'v1.2.0',
+    badge: 'NEW MINI GAME',
+    cover: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80',
+    banner: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
+    description: 'Guide your cybernetic light snake through an encrypted matrix grid. Consume data nodes, expand your photon tail, and avoid laser barriers!',
+    features: [
+      'Neon Light Trail Effects',
+      'Smooth Touch & Swipe Controls',
+      'Multi-Speed Cyber Grid',
+      'Instant Web & Mobile Play'
+    ],
+    screenshots: [
+      'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80'
+    ]
+  },
+  {
+    id: 'memory-matrix-hack',
+    title: 'Memory Matrix: Cyber Hack',
+    developer: 'Neural Logic Lab',
+    category: 'puzzle',
+    isMiniGame: true,
+    miniGameType: 'memory',
+    rating: 4.8,
+    reviewsCount: '9.3K',
+    downloads: '680K+',
+    size: '55 MB',
+    version: 'v1.4.0',
+    badge: 'BRAIN CHALLENGE',
+    cover: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80',
+    banner: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+    description: 'Test your photographic memory and hacking speed! Match encrypted security nodes before time expires to breach mega-corp firewalls.',
+    features: [
+      'Dynamic Hacker Cyber Deck UI',
+      'Progressive Speed Difficulty',
+      'Memory Pattern Combos',
+      'Haptic Feedback Sound Effects'
+    ],
+    screenshots: [
+      'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80'
+    ]
+  },
+  {
     id: 'valkyrie-odyssey-mobile',
     title: 'Valkyrie Odyssey: Rebirth',
     developer: 'NEXUS RPG Network',
@@ -168,6 +222,84 @@ export const GAMES_DATA = [
     screenshots: [
       'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
       'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80'
+    ]
+  },
+  {
+    id: 'shadow-realm-ninja',
+    title: 'Shadow Realm: Ninja Protocol',
+    developer: 'Kurogane Interactive',
+    category: 'action',
+    isMiniGame: false,
+    rating: 4.9,
+    reviewsCount: '34.8K',
+    downloads: '4.2M+',
+    size: '1.6 GB',
+    version: 'v3.0.1',
+    badge: 'HARDCORE ACTION',
+    cover: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=800&q=80',
+    banner: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80',
+    description: 'Unleash cybernetic katana combat in a dark futuristic Neo-Tokyo. Execute lightning-fast parries, wall-run across skyscrapers, and vanquish rogue AI bosses.',
+    features: [
+      'Precision Parry & Slash Combat Mechanics',
+      'Cyberware Augment Upgrades',
+      'Boss Rush Arena Mode',
+      'DualShock & Xbox Controller Support'
+    ],
+    screenshots: [
+      'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80'
+    ]
+  },
+  {
+    id: 'iron-defense-command',
+    title: 'Iron Defense: Siege Command',
+    developer: 'Titan Warfare Games',
+    category: 'strategy',
+    isMiniGame: false,
+    rating: 4.7,
+    reviewsCount: '19.5K',
+    downloads: '1.8M+',
+    size: '640 MB',
+    version: 'v2.2.4',
+    badge: 'TACTICAL TOP',
+    cover: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80',
+    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80',
+    description: 'Construct impenetrable defense turrets, deploy orbital strike cannons, and command armored mech divisions against alien horde sieges.',
+    features: [
+      '40+ Campaign Mission Maps',
+      'Real-Time Tactical Unit Micro',
+      'Co-op Base Defense Mode',
+      'Extensive Tech Tree Upgrades'
+    ],
+    screenshots: [
+      'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80'
+    ]
+  },
+  {
+    id: 'hyper-horizon-velocity',
+    title: 'Hyper Horizon: Turbo Velocity',
+    developer: 'Volt Racers Inc.',
+    category: 'racing',
+    isMiniGame: false,
+    rating: 4.8,
+    reviewsCount: '21.3K',
+    downloads: '2.1M+',
+    size: '720 MB',
+    version: 'v1.9.5',
+    badge: 'SPEED DEMON',
+    cover: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
+    banner: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80',
+    description: 'Anti-gravity magnetic hovercraft racing at Mach-3 speeds! Fly through futuristic tube tracks, trigger warp boosts, and blast rival craft with EMP missiles.',
+    features: [
+      'Anti-Gravity 360-Degree Tracks',
+      'EMP & Plasma Weaponry pickups',
+      'Smooth 120 FPS High Refresh Support',
+      'Online Ranked Tournaments'
+    ],
+    screenshots: [
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80'
     ]
   }
 ];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, RotateCcw, Volume2, VolumeX, Trophy, X, ArrowLeft, ArrowRight, Shield, Zap } from 'lucide-react';
+import { Play, RotateCcw, Volume2, VolumeX, Trophy, X, ArrowLeft, ArrowRight, Shield, Zap, Target } from 'lucide-react';
 
 export default function PlayableMiniGame({ game, onClose }) {
   const canvasRef = useRef(null);
@@ -10,7 +10,7 @@ export default function PlayableMiniGame({ game, onClose }) {
   });
   const [soundEnabled, setSoundEnabled] = useState(true);
 
-  // Ref to trigger jumps/actions directly from mobile touch buttons
+  // Ref to trigger actions directly from mobile touch buttons
   const triggerActionRef = useRef(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function PlayableMiniGame({ game, onClose }) {
     let localScore = 0;
     let isGameOver = false;
 
-    // --- MINI-GAME 1: CYBER RUNNER 2099 ---
+    // --- MINI-GAME 1: CYBER RUNNER 2099 (runner) ---
     if (game.miniGameType === 'runner') {
       let player = { x: 50, y: 180, width: 30, height: 40, vy: 0, grounded: true };
       let obstacles = [];
@@ -38,9 +38,10 @@ export default function PlayableMiniGame({ game, onClose }) {
       };
 
       triggerActionRef.current = {
-        jump: () => jump(),
-        moveLeft: () => {},
-        moveRight: () => {}
+        action1: () => jump(),
+        action2: () => {},
+        label1: 'JUMP 🚀',
+        label2: null
       };
 
       const handleKeyDown = (e) => {
@@ -180,9 +181,7 @@ export default function PlayableMiniGame({ game, onClose }) {
         }
       };
 
-      if (gameState === 'PLAYING') {
-        loop();
-      }
+      if (gameState === 'PLAYING') loop();
 
       return () => {
         cancelAnimationFrame(animationFrameId);
@@ -192,7 +191,7 @@ export default function PlayableMiniGame({ game, onClose }) {
       };
     }
 
-    // --- MINI-GAME 2: NEON BREAKOUT ---
+    // --- MINI-GAME 2: NEON BREAKOUT ULTRA (breakout) ---
     else if (game.miniGameType === 'breakout') {
       let paddle = { x: canvas.width / 2 - 40, width: 80, height: 12 };
       let ball = { x: canvas.width / 2, y: 180, dx: 3.5, dy: -3.5, radius: 6 };
@@ -208,9 +207,10 @@ export default function PlayableMiniGame({ game, onClose }) {
       }
 
       triggerActionRef.current = {
-        jump: () => {},
-        moveLeft: () => { paddle.x = Math.max(0, paddle.x - 25); },
-        moveRight: () => { paddle.x = Math.min(canvas.width - paddle.width, paddle.x + 25); }
+        action1: () => { paddle.x = Math.max(0, paddle.x - 25); },
+        action2: () => { paddle.x = Math.min(canvas.width - paddle.width, paddle.x + 25); },
+        label1: '◀ LEFT',
+        label2: 'RIGHT ▶'
       };
 
       const handleMouseMove = (e) => {
@@ -324,6 +324,392 @@ export default function PlayableMiniGame({ game, onClose }) {
       };
     }
 
+    // --- MINI-GAME 3: GALACTIC HORIZON ZERO (space shooter) ---
+    else if (game.miniGameType === 'space') {
+      let ship = { x: canvas.width / 2 - 15, y: canvas.height - 40, width: 30, height: 30 };
+      let lasers = [];
+      let enemies = [];
+      let frame = 0;
+
+      const fireLaser = () => {
+        lasers.push({ x: ship.x + ship.width / 2 - 2, y: ship.y, width: 4, height: 10 });
+      };
+
+      triggerActionRef.current = {
+        action1: () => { ship.x = Math.max(10, ship.x - 20); },
+        action2: () => { ship.x = Math.min(canvas.width - 40, ship.x + 20); },
+        actionFire: () => fireLaser(),
+        label1: '◀ LEFT',
+        label2: 'RIGHT ▶',
+        labelFire: '🔥 FIRE'
+      };
+
+      const handleTouchMove = (e) => {
+        if (e.cancelable) e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        let touch = e.touches[0];
+        let relativeX = touch.clientX - rect.left;
+        if (relativeX > 0 && relativeX < rect.width) {
+          ship.x = (relativeX / rect.width) * canvas.width - ship.width / 2;
+        }
+      };
+
+      const handleCanvasClick = () => {
+        if (gameState === 'PLAYING') fireLaser();
+      };
+
+      canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+      canvas.addEventListener('click', handleCanvasClick);
+
+      const loop = () => {
+        if (gameState !== 'PLAYING') return;
+        frame++;
+
+        ctx.fillStyle = '#07090e';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw Starfield Background
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        for (let i = 0; i < 20; i++) {
+          let sy = (frame * 2 + i * 15) % canvas.height;
+          let sx = (i * 37) % canvas.width;
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+
+        // Auto Fire every 15 frames
+        if (frame % 15 === 0) {
+          fireLaser();
+        }
+
+        // Spawn Enemies / Asteroids
+        if (frame % 45 === 0) {
+          enemies.push({ 
+            x: Math.random() * (canvas.width - 30), 
+            y: -20, 
+            width: 25, 
+            height: 25, 
+            speed: 2 + Math.random() * 2 
+          });
+        }
+
+        // Draw Starship
+        ctx.fillStyle = '#00f0ff';
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.moveTo(ship.x + ship.width / 2, ship.y);
+        ctx.lineTo(ship.x, ship.y + ship.height);
+        ctx.lineTo(ship.x + ship.width, ship.y + ship.height);
+        ctx.closePath();
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Lasers Physics & Drawing
+        for (let i = lasers.length - 1; i >= 0; i--) {
+          let l = lasers[i];
+          l.y -= 7;
+          ctx.fillStyle = '#ff007f';
+          ctx.shadowColor = '#ff007f';
+          ctx.shadowBlur = 8;
+          ctx.fillRect(l.x, l.y, l.width, l.height);
+          ctx.shadowBlur = 0;
+
+          if (l.y < -10) lasers.splice(i, 1);
+        }
+
+        // Enemies Physics, Collision & Drawing
+        for (let i = enemies.length - 1; i >= 0; i--) {
+          let en = enemies[i];
+          en.y += en.speed;
+
+          ctx.fillStyle = '#fbbf24';
+          ctx.fillRect(en.x, en.y, en.width, en.height);
+
+          // Ship Collision
+          if (
+            ship.x < en.x + en.width &&
+            ship.x + ship.width > en.x &&
+            ship.y < en.y + en.height &&
+            ship.y + ship.height > en.y
+          ) {
+            isGameOver = true;
+          }
+
+          // Laser Hits Enemy
+          for (let j = lasers.length - 1; j >= 0; j--) {
+            let l = lasers[j];
+            if (
+              l.x < en.x + en.width &&
+              l.x + l.width > en.x &&
+              l.y < en.y + en.height &&
+              l.y + l.height > en.y
+            ) {
+              enemies.splice(i, 1);
+              lasers.splice(j, 1);
+              localScore += 30;
+              setScore(localScore);
+              break;
+            }
+          }
+
+          if (en && en.y > canvas.height + 20) {
+            enemies.splice(i, 1);
+          }
+        }
+
+        if (isGameOver) {
+          setGameState('GAMEOVER');
+          if (localScore > highScore) {
+            setHighScore(localScore);
+            localStorage.setItem(`hs_${game.id}`, localScore.toString());
+          }
+        } else {
+          animationFrameId = requestAnimationFrame(loop);
+        }
+      };
+
+      if (gameState === 'PLAYING') loop();
+
+      return () => {
+        cancelAnimationFrame(animationFrameId);
+        canvas.removeEventListener('touchmove', handleTouchMove);
+        canvas.removeEventListener('click', handleCanvasClick);
+      };
+    }
+
+    // --- MINI-GAME 4: CYBER SNAKE 2099 (snake) ---
+    else if (game.miniGameType === 'snake') {
+      let grid = 15;
+      let snake = [{ x: 150, y: 150 }, { x: 135, y: 150 }, { x: 120, y: 150 }];
+      let dx = grid, dy = 0;
+      let food = { x: 225, y: 150 };
+      let frame = 0;
+
+      const changeDir = (newDx, newDy) => {
+        if (newDx !== -dx && newDy !== -dy) {
+          dx = newDx;
+          dy = newDy;
+        }
+      };
+
+      triggerActionRef.current = {
+        action1: () => changeDir(0, -grid), // UP
+        action2: () => changeDir(0, grid),  // DOWN
+        actionLeft: () => changeDir(-grid, 0),
+        actionRight: () => changeDir(grid, 0),
+        label1: '▲ UP',
+        label2: '▼ DOWN',
+        labelLeft: '◀ LEFT',
+        labelRight: 'RIGHT ▶'
+      };
+
+      const loop = () => {
+        if (gameState !== 'PLAYING') return;
+        frame++;
+
+        // Render every 6 frames for arcade speed
+        if (frame % 6 === 0) {
+          ctx.fillStyle = '#0b0e17';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // Grid lines
+          ctx.strokeStyle = 'rgba(0, 240, 255, 0.08)';
+          for (let x = 0; x < canvas.width; x += grid) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, canvas.height);
+            ctx.stroke();
+          }
+
+          // Move Snake Head
+          let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+          // Wall Collision check
+          if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
+            isGameOver = true;
+          }
+
+          // Self Collision
+          for (let i = 0; i < snake.length; i++) {
+            if (head.x === snake[i].x && head.y === snake[i].y) {
+              isGameOver = true;
+            }
+          }
+
+          if (!isGameOver) {
+            snake.unshift(head);
+
+            // Food collision
+            if (head.x === food.x && head.y === food.y) {
+              localScore += 50;
+              setScore(localScore);
+              food = {
+                x: Math.floor(Math.random() * (canvas.width / grid)) * grid,
+                y: Math.floor(Math.random() * (canvas.height / grid)) * grid
+              };
+            } else {
+              snake.pop();
+            }
+
+            // Draw Food
+            ctx.fillStyle = '#ff007f';
+            ctx.shadowColor = '#ff007f';
+            ctx.shadowBlur = 10;
+            ctx.fillRect(food.x, food.y, grid - 1, grid - 1);
+            ctx.shadowBlur = 0;
+
+            // Draw Snake
+            snake.forEach((segment, idx) => {
+              ctx.fillStyle = idx === 0 ? '#00f0ff' : '#7000ff';
+              ctx.shadowColor = ctx.fillStyle;
+              ctx.shadowBlur = 6;
+              ctx.fillRect(segment.x, segment.y, grid - 1, grid - 1);
+              ctx.shadowBlur = 0;
+            });
+          }
+        }
+
+        if (isGameOver) {
+          setGameState('GAMEOVER');
+          if (localScore > highScore) {
+            setHighScore(localScore);
+            localStorage.setItem(`hs_${game.id}`, localScore.toString());
+          }
+        } else {
+          animationFrameId = requestAnimationFrame(loop);
+        }
+      };
+
+      if (gameState === 'PLAYING') loop();
+
+      return () => {
+        cancelAnimationFrame(animationFrameId);
+      };
+    }
+
+    // --- MINI-GAME 5: MEMORY MATRIX HACK (memory) ---
+    else if (game.miniGameType === 'memory') {
+      let cards = [
+        { id: 1, val: '⚡', flipped: false, matched: false },
+        { id: 2, val: '⚡', flipped: false, matched: false },
+        { id: 3, val: '🔑', flipped: false, matched: false },
+        { id: 4, val: '🔑', flipped: false, matched: false },
+        { id: 5, val: '💻', flipped: false, matched: false },
+        { id: 6, val: '💻', flipped: false, matched: false },
+        { id: 7, val: '🛡️', flipped: false, matched: false },
+        { id: 8, val: '🛡️', flipped: false, matched: false },
+      ].sort(() => Math.random() - 0.5);
+
+      let firstSelected = null;
+      let lockBoard = false;
+
+      triggerActionRef.current = {
+        action1: null,
+        action2: null
+      };
+
+      const handleCanvasClick = (e) => {
+        if (lockBoard) return;
+        const rect = canvas.getBoundingClientRect();
+        let clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
+        let clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
+
+        // Check card clicks (4 cols x 2 rows)
+        cards.forEach((c, idx) => {
+          let col = idx % 4;
+          let row = Math.floor(idx / 4);
+          let cx = 30 + col * 85;
+          let cy = 50 + row * 110;
+
+          if (clickX >= cx && clickX <= cx + 70 && clickY >= cy && clickY <= cy + 90) {
+            if (c.flipped || c.matched) return;
+
+            c.flipped = true;
+            drawBoard();
+
+            if (!firstSelected) {
+              firstSelected = c;
+            } else {
+              if (firstSelected.val === c.val) {
+                firstSelected.matched = true;
+                c.matched = true;
+                firstSelected = null;
+                localScore += 100;
+                setScore(localScore);
+
+                if (cards.every(cd => cd.matched)) {
+                  setTimeout(() => {
+                    setGameState('GAMEOVER');
+                    if (localScore > highScore) {
+                      setHighScore(localScore);
+                      localStorage.setItem(`hs_${game.id}`, localScore.toString());
+                    }
+                  }, 600);
+                }
+              } else {
+                lockBoard = true;
+                setTimeout(() => {
+                  firstSelected.flipped = false;
+                  c.flipped = false;
+                  firstSelected = null;
+                  lockBoard = false;
+                  drawBoard();
+                }, 800);
+              }
+            }
+          }
+        });
+      };
+
+      const drawBoard = () => {
+        ctx.fillStyle = '#0b0e17';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#00f0ff';
+        ctx.font = 'bold 14px monospace';
+        ctx.fillText('BREACH FIREWALL MATRIX - MATCH SYMBOLS', 40, 30);
+
+        cards.forEach((c, idx) => {
+          let col = idx % 4;
+          let row = Math.floor(idx / 4);
+          let cx = 30 + col * 85;
+          let cy = 50 + row * 110;
+
+          if (c.flipped || c.matched) {
+            ctx.fillStyle = c.matched ? '#10b981' : '#1e293b';
+            ctx.strokeStyle = '#00f0ff';
+            ctx.lineWidth = 2;
+            ctx.fillRect(cx, cy, 70, 90);
+            ctx.strokeRect(cx, cy, 70, 90);
+
+            ctx.font = '32px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(c.val, cx + 35, cy + 55);
+            ctx.textAlign = 'left';
+          } else {
+            ctx.fillStyle = '#0f172a';
+            ctx.strokeStyle = '#7000ff';
+            ctx.lineWidth = 2;
+            ctx.fillRect(cx, cy, 70, 90);
+            ctx.strokeRect(cx, cy, 70, 90);
+
+            ctx.fillStyle = '#7000ff';
+            ctx.font = 'bold 20px monospace';
+            ctx.fillText('?', cx + 28, cy + 53);
+          }
+        });
+      };
+
+      if (gameState === 'PLAYING') {
+        drawBoard();
+        canvas.addEventListener('click', handleCanvasClick);
+      }
+
+      return () => {
+        canvas.removeEventListener('click', handleCanvasClick);
+      };
+    }
+
     // Default Fallback
     else {
       ctx.fillStyle = '#0b0e17';
@@ -390,9 +776,11 @@ export default function PlayableMiniGame({ game, onClose }) {
               </div>
               <h4 className="font-display text-lg sm:text-xl font-bold text-white mb-1">Ready to Play?</h4>
               <p className="text-xs text-slate-400 mb-5 max-w-xs">
-                {game.miniGameType === 'runner' 
-                  ? 'Tap screen or press Spacebar / Up Arrow to Jump & dodge obstacles!'
-                  : 'Drag on canvas or use touch buttons below to control paddle!'}
+                {game.miniGameType === 'runner' ? 'Tap screen or press Spacebar to Jump & dodge obstacles!' :
+                 game.miniGameType === 'breakout' ? 'Drag on canvas or use touch buttons below to control laser paddle!' :
+                 game.miniGameType === 'space' ? 'Pilot your starfighter and blast incoming asteroid drones!' :
+                 game.miniGameType === 'snake' ? 'Control your light trail snake and collect energy data nodes!' :
+                 'Match hacking security cards before matrix lockdown!'}
               </p>
               <button
                 onClick={startGame}
@@ -430,49 +818,79 @@ export default function PlayableMiniGame({ game, onClose }) {
         </div>
 
         {/* Mobile Touch Controls Area */}
-        {gameState === 'PLAYING' && (
+        {gameState === 'PLAYING' && triggerActionRef.current && (
           <div className="w-full mt-3">
-            {game.miniGameType === 'runner' ? (
-              <button
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  if (triggerActionRef.current) triggerActionRef.current.jump();
-                }}
-                onClick={() => {
-                  if (triggerActionRef.current) triggerActionRef.current.jump();
-                }}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg shadow-cyan-500/20 active:scale-98 transition-all touch-manipulation flex items-center justify-center gap-2 select-none"
-              >
-                <Zap className="w-4 h-4 fill-slate-950" /> TAP HERE TO JUMP 🚀
-              </button>
-            ) : (
-              <div className="flex gap-2 w-full">
+            {triggerActionRef.current.labelLeft ? (
+              <div className="grid grid-cols-4 gap-1.5 w-full">
                 <button
-                  onTouchStart={(e) => {
-                    e.preventDefault();
-                    if (triggerActionRef.current) triggerActionRef.current.moveLeft();
-                  }}
-                  onClick={() => {
-                    if (triggerActionRef.current) triggerActionRef.current.moveLeft();
-                  }}
-                  className="flex-1 py-3 rounded-xl bg-slate-800 active:bg-cyan-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 touch-manipulation active:scale-95 select-none"
+                  onClick={() => triggerActionRef.current.actionLeft()}
+                  className="py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs active:bg-cyan-600 flex items-center justify-center touch-manipulation"
                 >
-                  <ArrowLeft className="w-4 h-4" /> LEFT
+                  {triggerActionRef.current.labelLeft}
                 </button>
                 <button
-                  onTouchStart={(e) => {
-                    e.preventDefault();
-                    if (triggerActionRef.current) triggerActionRef.current.moveRight();
-                  }}
-                  onClick={() => {
-                    if (triggerActionRef.current) triggerActionRef.current.moveRight();
-                  }}
-                  className="flex-1 py-3 rounded-xl bg-slate-800 active:bg-cyan-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 touch-manipulation active:scale-95 select-none"
+                  onClick={() => triggerActionRef.current.action1()}
+                  className="py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs active:bg-cyan-600 flex items-center justify-center touch-manipulation"
                 >
-                  RIGHT <ArrowRight className="w-4 h-4" />
+                  {triggerActionRef.current.label1}
+                </button>
+                <button
+                  onClick={() => triggerActionRef.current.action2()}
+                  className="py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs active:bg-cyan-600 flex items-center justify-center touch-manipulation"
+                >
+                  {triggerActionRef.current.label2}
+                </button>
+                <button
+                  onClick={() => triggerActionRef.current.actionRight()}
+                  className="py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs active:bg-cyan-600 flex items-center justify-center touch-manipulation"
+                >
+                  {triggerActionRef.current.labelRight}
                 </button>
               </div>
-            )}
+            ) : triggerActionRef.current.labelFire ? (
+              <div className="flex gap-2 w-full">
+                <button
+                  onClick={() => triggerActionRef.current.action1()}
+                  className="flex-1 py-3 rounded-xl bg-slate-800 active:bg-cyan-600 text-white font-bold text-xs flex items-center justify-center gap-1 touch-manipulation"
+                >
+                  {triggerActionRef.current.label1}
+                </button>
+                <button
+                  onClick={() => triggerActionRef.current.actionFire()}
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 text-white font-extrabold text-xs flex items-center justify-center gap-1 touch-manipulation shadow-md"
+                >
+                  {triggerActionRef.current.labelFire}
+                </button>
+                <button
+                  onClick={() => triggerActionRef.current.action2()}
+                  className="flex-1 py-3 rounded-xl bg-slate-800 active:bg-cyan-600 text-white font-bold text-xs flex items-center justify-center gap-1 touch-manipulation"
+                >
+                  {triggerActionRef.current.label2}
+                </button>
+              </div>
+            ) : triggerActionRef.current.label2 ? (
+              <div className="flex gap-2 w-full">
+                <button
+                  onClick={() => triggerActionRef.current.action1()}
+                  className="flex-1 py-3 rounded-xl bg-slate-800 active:bg-cyan-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 touch-manipulation active:scale-95 select-none"
+                >
+                  {triggerActionRef.current.label1}
+                </button>
+                <button
+                  onClick={() => triggerActionRef.current.action2()}
+                  className="flex-1 py-3 rounded-xl bg-slate-800 active:bg-cyan-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 touch-manipulation active:scale-95 select-none"
+                >
+                  {triggerActionRef.current.label2}
+                </button>
+              </div>
+            ) : triggerActionRef.current.label1 ? (
+              <button
+                onClick={() => triggerActionRef.current.action1()}
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-extrabold text-xs sm:text-sm shadow-lg shadow-cyan-500/20 active:scale-98 transition-all touch-manipulation flex items-center justify-center gap-2 select-none"
+              >
+                <Zap className="w-4 h-4 fill-slate-950" /> {triggerActionRef.current.label1}
+              </button>
+            ) : null}
           </div>
         )}
 
@@ -485,4 +903,3 @@ export default function PlayableMiniGame({ game, onClose }) {
     </div>
   );
 }
-
