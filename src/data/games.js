@@ -93,6 +93,87 @@ export const GAMES_DATA = [
     ]
   },
   {
+    id: 'valkyrie-odyssey-mobile',
+    title: 'Valkyrie Odyssey: Rebirth',
+    developer: 'NEXUS RPG Network',
+    category: 'rpg',
+    isMiniGame: true,
+    miniGameType: 'rpg',
+    rating: 4.9,
+    reviewsCount: '45.2K',
+    downloads: '5.0M+',
+    size: '2.4 GB',
+    version: 'v4.0.5',
+    badge: 'AAA MOBILE',
+    cover: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
+    banner: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
+    description: 'An open-world unreal-engine fantasy action RPG built specifically for high-end mobile devices. Explore mythical realms, conquer dungeon raids with friends, and forge legendary gear.',
+    features: [
+      'Console-Quality Graphics with Ray Tracing',
+      'Real-Time Multiplayer Guild Raids',
+      'Deep Skill Tree & Artifact Customization',
+      'Cross-Platform Save Progress'
+    ],
+    screenshots: [
+      'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'
+    ]
+  },
+  {
+    id: 'drift-overdrive-nitro',
+    title: 'Drift Overdrive: Nitro X',
+    developer: 'Apex Speedworks',
+    category: 'racing',
+    isMiniGame: true,
+    miniGameType: 'racing',
+    rating: 4.8,
+    reviewsCount: '28.9K',
+    downloads: '3.1M+',
+    size: '890 MB',
+    version: 'v2.1.0',
+    badge: 'MUST PLAY',
+    cover: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
+    banner: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+    description: 'Burn rubber through mountain passes and coastal highways. Tune supercar engines, customize vinyl wraps, and challenge live players in global PvP drift battles.',
+    features: [
+      '50+ Real Licensed Supercars',
+      'Realistic Vehicle Physics & Smoke FX',
+      'Live Asynchronous & Ranked Multiplayer',
+      'Gyroscope & Touch Steering Controls'
+    ],
+    screenshots: [
+      'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80'
+    ]
+  },
+  {
+    id: 'mind-maze-chronicles',
+    title: 'Mind Maze 3D: Quantum',
+    developer: 'Paradox Logic Lab',
+    category: 'puzzle',
+    isMiniGame: true,
+    miniGameType: 'puzzle',
+    rating: 4.6,
+    reviewsCount: '6.7K',
+    downloads: '600K+',
+    size: '120 MB',
+    version: 'v1.5.2',
+    badge: 'INDIE GEM',
+    cover: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+    banner: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80',
+    description: 'Solve mind-bending spatial geometry puzzles in a zero-gravity environment. Rotate gravity planes and manipulate light lasers to unlock mysterious ancient monoliths.',
+    features: [
+      '80+ Handcrafted Spatial Puzzles',
+      'Atmospheric Ambient Soundscapes',
+      'No Timers or Microtransactions',
+      'Haptic Touch Feedback'
+    ],
+    screenshots: [
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80'
+    ]
+  },
+  {
     id: 'cyber-snake-2099',
     title: 'Cyber Snake 2099',
     developer: 'Grid Master Studios',
@@ -147,89 +228,12 @@ export const GAMES_DATA = [
     ]
   },
   {
-    id: 'valkyrie-odyssey-mobile',
-    title: 'Valkyrie Odyssey: Rebirth',
-    developer: 'NEXUS RPG Network',
-    category: 'rpg',
-    isMiniGame: false,
-    rating: 4.9,
-    reviewsCount: '45.2K',
-    downloads: '5.0M+',
-    size: '2.4 GB',
-    version: 'v4.0.5',
-    badge: 'AAA MOBILE',
-    cover: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
-    banner: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
-    description: 'An open-world unreal-engine fantasy action RPG built specifically for high-end mobile devices. Explore mythical realms, conquer dungeon raids with friends, and forge legendary gear.',
-    features: [
-      'Console-Quality Graphics with Ray Tracing',
-      'Real-Time Multiplayer Guild Raids',
-      'Deep Skill Tree & Artifact Customization',
-      'Cross-Platform Save Progress'
-    ],
-    screenshots: [
-      'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80',
-      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'
-    ]
-  },
-  {
-    id: 'drift-overdrive-nitro',
-    title: 'Drift Overdrive: Nitro X',
-    developer: 'Apex Speedworks',
-    category: 'racing',
-    isMiniGame: false,
-    rating: 4.8,
-    reviewsCount: '28.9K',
-    downloads: '3.1M+',
-    size: '890 MB',
-    version: 'v2.1.0',
-    badge: 'MUST PLAY',
-    cover: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-    banner: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
-    description: 'Burn rubber through mountain passes and coastal highways. Tune supercar engines, customize vinyl wraps, and challenge live players in global PvP drift battles.',
-    features: [
-      '50+ Real Licensed Supercars',
-      'Realistic Vehicle Physics & Smoke FX',
-      'Live Asynchronous & Ranked Multiplayer',
-      'Gyroscope & Touch Steering Controls'
-    ],
-    screenshots: [
-      'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80',
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80'
-    ]
-  },
-  {
-    id: 'mind-maze-chronicles',
-    title: 'Mind Maze 3D: Quantum',
-    developer: 'Paradox Logic Lab',
-    category: 'puzzle',
-    isMiniGame: false,
-    rating: 4.6,
-    reviewsCount: '6.7K',
-    downloads: '600K+',
-    size: '120 MB',
-    version: 'v1.5.2',
-    badge: 'INDIE GEM',
-    cover: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
-    banner: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80',
-    description: 'Solve mind-bending spatial geometry puzzles in a zero-gravity environment. Rotate gravity planes and manipulate light lasers to unlock mysterious ancient monoliths.',
-    features: [
-      '80+ Handcrafted Spatial Puzzles',
-      'Atmospheric Ambient Soundscapes',
-      'No Timers or Microtransactions',
-      'Haptic Touch Feedback'
-    ],
-    screenshots: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
-      'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80'
-    ]
-  },
-  {
     id: 'shadow-realm-ninja',
     title: 'Shadow Realm: Ninja Protocol',
     developer: 'Kurogane Interactive',
     category: 'action',
-    isMiniGame: false,
+    isMiniGame: true,
+    miniGameType: 'ninja',
     rating: 4.9,
     reviewsCount: '34.8K',
     downloads: '4.2M+',
@@ -255,7 +259,8 @@ export const GAMES_DATA = [
     title: 'Iron Defense: Siege Command',
     developer: 'Titan Warfare Games',
     category: 'strategy',
-    isMiniGame: false,
+    isMiniGame: true,
+    miniGameType: 'turret',
     rating: 4.7,
     reviewsCount: '19.5K',
     downloads: '1.8M+',
@@ -281,7 +286,8 @@ export const GAMES_DATA = [
     title: 'Hyper Horizon: Turbo Velocity',
     developer: 'Volt Racers Inc.',
     category: 'racing',
-    isMiniGame: false,
+    isMiniGame: true,
+    miniGameType: 'racing',
     rating: 4.8,
     reviewsCount: '21.3K',
     downloads: '2.1M+',

@@ -31,18 +31,34 @@ export default function App() {
     loadGames();
   }, []);
 
-  // Handle URL Hash Deep Linking (#game=game-id)
+  // Handle URL Hash Deep Linking (#game=game-id or #play=game-id or ?game=game-id)
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith('#game=')) {
-        const gameId = hash.replace('#game=', '');
-        const found = games.find(g => g.id === gameId);
+      const hash = window.location.hash || '';
+      const search = window.location.search || '';
+
+      let targetGameId = null;
+      let isPlayMode = false;
+
+      if (hash.includes('play=')) {
+        targetGameId = hash.split('play=')[1]?.split('&')[0];
+        isPlayMode = true;
+      } else if (hash.includes('game=')) {
+        targetGameId = hash.split('game=')[1]?.split('&')[0];
+      } else if (search.includes('game=')) {
+        targetGameId = new URLSearchParams(search).get('game');
+      }
+
+      if (targetGameId) {
+        const cleanId = decodeURIComponent(targetGameId).trim();
+        const found = games.find(g => g.id === cleanId);
         if (found) {
-          setSelectedGameSubpage(found);
+          if (isPlayMode) {
+            setActiveMiniGame(found);
+          } else {
+            setSelectedGameSubpage(found);
+          }
         }
-      } else if (!hash) {
-        setSelectedGameSubpage(null);
       }
     };
 
